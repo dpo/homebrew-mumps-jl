@@ -119,7 +119,7 @@ class MpichMumps < Formula
 
     ENV.deparallelize # Build fails in parallel on Mavericks.
 
-    system "make", "alllib", *make_args
+    system "make", "all", *make_args
 
     # make shared lib
     so = OS.mac? ? "dylib" : "so"
