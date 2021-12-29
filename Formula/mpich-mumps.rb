@@ -2,7 +2,7 @@ class MpichMumps < Formula
   desc "Parallel Sparse Direct Solver"
   homepage "http://mumps-solver.org"
   url "http://mumps.enseeiht.fr/MUMPS_5.4.1.tar.gz"
-  sha256 "e5d665fdb7043043f0799ae3dbe3b37e5b200d1ab7a6f7b2a4e463fd89507fa4"
+  sha256 "93034a1a9fe0876307136dcde7e98e9086e199de76f1c47da822e7d4de987fa8"
 
   keg_only "because why not"
 
