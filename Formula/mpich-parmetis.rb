@@ -5,12 +5,6 @@ class MpichParmetis < Formula
   sha256 "f2d9a231b7cf97f1fee6e8c9663113ebf6c240d407d3c118c55b3633d6be6e5f"
   revision 1
 
-  bottle do
-    root_url "https://archive.org/download/brewsci/bottles-num"
-    sha256 cellar: :any, sierra:       "ab6deec90cfb0c0c4b432f5e27e0f1c74624cdbf65e7d3bc50c438703588ab45"
-    sha256 cellar: :any, x86_64_linux: "11e90f57b7ffa6201007f5aed5eb747acb5234ed261f6e3fc4c0a2e1f9bb4bf5"
-  end
-
   keg_only "because why not"
 
   depends_on "cmake" => :build
