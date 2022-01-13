@@ -5,6 +5,12 @@ class MpichParmetis < Formula
   sha256 "f2d9a231b7cf97f1fee6e8c9663113ebf6c240d407d3c118c55b3633d6be6e5f"
   revision 2
 
+  bottle do
+    root_url "https://github.com/dpo/homebrew-mumps-jl/releases/download/mpich-parmetis-4.0.3_2"
+    sha256 cellar: :any,                 big_sur:      "3c8e768ba6274d9bbf5c1056cf58937fc95d0acfd30a274ec07855f946689749"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "66ed9f2aaa5d4c523308c6d21163008d8930e61ee4adee550f96fae2b044ef6d"
+  end
+
   keg_only "because why not"
 
   depends_on "cmake" => :build
