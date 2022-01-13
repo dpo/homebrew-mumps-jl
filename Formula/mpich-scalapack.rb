@@ -11,6 +11,12 @@ class MpichScalapack < Formula
     regex(/href=.*?scalapack[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  bottle do
+    root_url "https://github.com/dpo/homebrew-mumps-jl/releases/download/mpich-scalapack-2.1.0_4"
+    sha256 cellar: :any,                 big_sur:      "127c22c11d48e4568f52cd68074d3f793fdd17b2b68a6929f9c4d6d087a20c39"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "da7ae29f4228b5f5e7ae875e0da33e8f70f36219a7310748a738d5aa74e768e0"
+  end
+
   keg_only "conflicts with a core formula"
 
   depends_on "cmake" => :build
