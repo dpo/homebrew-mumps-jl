@@ -4,6 +4,12 @@ class MpichScotch < Formula
   url "https://gitlab.inria.fr/scotch/scotch/-/archive/v6.1.0/scotch-v6.1.0.tar.gz"
   sha256 "4fe537f608f0fe39ec78807f90203f9cca1181deb16bfa93b7d4cd440e01bbd1"
 
+  bottle do
+    root_url "https://github.com/dpo/homebrew-mumps-jl/releases/download/mpich-scotch-6.1.0"
+    sha256 cellar: :any,                 big_sur:      "8c54000ff13626960305dfe8d0dbe03b3a7cc33c1e165518490be638878144e8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "f1ec3483c4a475bb3bd5cec5cac3b9267af4409dc8b3e91ddf6f2dfa8b10cb4c"
+  end
+
   keg_only "formulae in dpo/mumps-jl are keg only"
 
   depends_on "bzip2" unless OS.mac?
