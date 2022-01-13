@@ -1,4 +1,5 @@
 [
+  "mpich-mumps",
   "mpich-parmetis",
   "mpich-scalapack"
 ]

@@ -3,8 +3,11 @@ class MpichMumps < Formula
   homepage "http://mumps-solver.org"
   url "http://mumps.enseeiht.fr/MUMPS_5.4.1.tar.gz"
   sha256 "93034a1a9fe0876307136dcde7e98e9086e199de76f1c47da822e7d4de987fa8"
+  revision 1
 
   keg_only "because why not"
+
+  depends_on "dpo/mumps-jl/mpich-scotch"
 
   depends_on "gcc"
   depends_on "openblas"
@@ -12,13 +15,10 @@ class MpichMumps < Formula
 
   if build.with? "mpich"
     depends_on "dpo/mumps-jl/mpich-scalapack"
-    depends_on "dpo/mumps-jl/mpich-parmetis" => :recommended
+    depends_on "dpo/mumps-jl/mpich-parmetis"
   else
-    depends_on "brewsci/num/brewsci-metis" => :recommended
+    depends_on "metis"
   end
-
-  depends_on "brewsci/num/brewsci-scotch" => :optional
-  depends_on "brewsci/num/brewsci-scotch@5" => :optional
 
   fails_with :clang # because we use OpenMP
 
@@ -28,7 +28,7 @@ class MpichMumps < Formula
   end
 
   def install
-    # MUMPS 5.3.4 does not compile with gfortran10. Allow some errors to go through.
+    # MUMPS >= 5.3.4 does not compile with gfortran10. Allow some errors to go through.
     # see https://listes.ens-lyon.fr/sympa/arc/mumps-users/2020-10/msg00002.html
     make_args = ["RANLIB=echo", "CDEFS=-DAdd_"]
     optf = ["OPTF=-O"]
@@ -42,69 +42,54 @@ class MpichMumps < Formula
 
     lib_args = []
 
-    if build.with? "brewsci-scotch@5"
+    scotch_dir = Formula["mpich-scotch"].opt_prefix
+    make_args += ["SCOTCHDIR=#{scotch_dir}", "ISCOTCH=-I#{Formula["mpich-scotch"].opt_include}"]
 
-      scotch_dir = Formula["brewsci-scotch@5"].opt_prefix
-      make_args += ["SCOTCHDIR=#{scotch_dir}", "ISCOTCH=-I#{Formula["brewsci-scotch@5"].opt_include}"]
-
-      if build.with? "mpich"
-        scotch_libs = "-L$(SCOTCHDIR)/lib -lptesmumps -lptscotch -lptscotcherr"
-        scotch_libs += " -lptscotchparmetis" if build.with? "mpich-parmetis"
-        orderingsf << " -Dptscotch"
-      else
-        scotch_libs = "-L$(SCOTCHDIR)/lib -lesmumps -lscotch -lscotcherr"
-        scotch_libs += " -lscotchmetis" if build.with? "brewsci-metis"
-        orderingsf << " -Dscotch"
-      end
-      make_args << "LSCOTCH=#{scotch_libs}"
-      lib_args += scotch_libs.split
-
-    elsif build.with? "brewsci-scotch"
-
-      scotch_dir = Formula["brewsci-scotch"].opt_prefix
-      make_args += ["SCOTCHDIR=#{scotch_dir}", "ISCOTCH=-I#{Formula["brewsci-scotch"].opt_include}"]
-
-      if build.with? "mpich"
-        scotch_libs = "-L$(SCOTCHDIR)/lib -lptscotch -lptscotcherr -lptscotcherrexit -lscotch"
-        scotch_libs += "-lptscotchparmetis" if build.with? "mpich-parmetis"
-        orderingsf << " -Dptscotch"
-      else
-        scotch_libs = "-L$(SCOTCHDIR)/lib -lscotch -lscotcherr -lscotcherrexit"
-        scotch_libs += "-lscotchmetis" if build.with? "brewsci-metis"
-        orderingsf << " -Dscotch"
-      end
-      make_args << "LSCOTCH=#{scotch_libs}"
-      lib_args += scotch_libs.split
-
+    if build.with? "mpich"
+      scotch_libs = ["-L$(SCOTCHDIR)/lib",
+                     "-lesmumps",
+                     "-lptscotch",
+                     "-lptscotcherr",
+                     "-lptscotcherrexit",
+                     "-lscotch",
+                     "-lptscotchparmetis"]
+      orderingsf << " -Dptscotch"
+    else
+      scotch_libs = ["-L$(SCOTCHDIR)/lib", "-lscotch", "-lscotcherr", "-lscotcherrexit", "-lscotchmetis"]
+      orderingsf << " -Dscotch"
     end
+    make_args << "LSCOTCH=#{scotch_libs.join(" ")}"
+    lib_args += scotch_libs
 
-    if build.with? "mpich-parmetis"
-      metis_libs = "-L#{Formula["mpich-parmetis"].opt_lib} -lparmetis -L#{Formula["brewsci-metis"].opt_lib} -lmetis"
+    if build.with? "mpich"
+      parmetis_libs = ["-L#{Formula["mpich-parmetis"].opt_lib}",
+                       "-lparmetis", "-L#{Formula["metis"].opt_lib}",
+                       "-lmetis"]
       make_args += ["LMETISDIR=#{Formula["mpich-parmetis"].opt_lib}",
                     "IMETIS=#{Formula["mpich-parmetis"].opt_include}",
-                    "LMETIS=#{metis_libs}"]
+                    "LMETIS=#{parmetis_libs.join(" ")}"]
       orderingsf << " -Dparmetis"
-      lib_args += metis_libs.split
-    elsif build.with? "brewsci-metis"
-      metis_libs = "-L#{Formula["brewsci-metis"].opt_lib} -lmetis"
-      make_args += ["LMETISDIR=#{Formula["brewsci-metis"].opt_lib}",
-                    "IMETIS=#{Formula["brewsci-metis"].opt_include}",
-                    "LMETIS=#{metis_libs}"]
+      lib_args += parmetis_libs
+    else
+      metis_libs = ["-L#{Formula["metis"].opt_lib}", "-lmetis"]
+      make_args += ["LMETISDIR=#{Formula["metis"].opt_lib}",
+                    "IMETIS=#{Formula["metis"].opt_include}",
+                    "LMETIS=#{metis_libs.join(" ")}"]
       orderingsf << " -Dmetis"
-      lib_args += metis_libs.split
+      lib_args += metis_libs
     end
 
     make_args << "ORDERINGSF=#{orderingsf}"
 
     if build.with? "mpich"
-      scalapack_libs = "-L#{Formula["mpich-scalapack"].opt_lib} -lscalapack"
+      scalapack_libs = ["-L#{Formula["mpich-scalapack"].opt_lib}", "-lscalapack"]
       make_args += ["CC=mpicc -fPIC",
                     "FC=mpif90 -fPIC",
                     "FL=mpif90 -fPIC",
-                    "SCALAP=#{scalapack_libs}",
+                    "SCALAP=#{scalapack_libs.join(" ")}",
                     "INCPAR=", # Let MPI compilers fill in the blanks.
                     "LIBPAR=$(SCALAP)"]
-      lib_args += scalapack_libs.split
+      lib_args += scalapack_libs
     else
       make_args += ["CC=#{ENV["CC"]} -fPIC",
                     "FC=gfortran -fPIC -fopenmp",
@@ -112,10 +97,10 @@ class MpichMumps < Formula
       lib_args << "-lgomp"
     end
 
-    blas_lib = "-L#{Formula["openblas"].opt_lib} -lopenblas"
-    make_args << "LIBBLAS=#{blas_lib}"
-    make_args << "LAPACK=#{blas_lib}"
-    lib_args += blas_lib.split
+    blas_lib = ["-L#{Formula["openblas"].opt_lib}", "-lopenblas"]
+    make_args << "LIBBLAS=#{blas_lib.join(" ")}"
+    make_args << "LAPACK=#{blas_lib.join(" ")}"
+    lib_args += blas_lib
 
     ENV.deparallelize # Build fails in parallel on Mavericks.
 
@@ -178,13 +163,8 @@ class MpichMumps < Formula
       resource("mumps_simple").stage do
         simple_args = ["CC=mpicc", "prefix=#{prefix}", "mumps_prefix=#{prefix}",
                        "scalapack_libdir=#{Formula["mpich-scalapack"].opt_lib}"]
-        if build.with? "brewsci-scotch@5"
-          simple_args += ["scotch_libdir=#{Formula["brewsci-scotch@5"].opt_lib}",
-                          "scotch_libs=-L$(scotch_libdir) -lptesmumps -lptscotch -lptscotcherr"]
-        elsif build.with? "brewsci-scotch"
-          simple_args += ["scotch_libdir=#{Formula["brewsci-scotch"].opt_lib}",
-                          "scotch_libs=-L$(scotch_libdir) -lptscotch -lptscotcherr -lscotch"]
-        end
+        simple_args += ["scotch_libdir=#{Formula["mpich-scotch"].opt_lib}",
+                        "scotch_libs=-L$(scotch_libdir) -lesmumps -lptscotch -lptscotcherr -lscotch"]
         simple_args += ["blas_libdir=#{Formula["openblas"].opt_lib}",
                         "blas_libs=-L$(blas_libdir) -lopenblas"]
         system "make", "SHELL=/bin/bash", *simple_args
@@ -223,37 +203,37 @@ class MpichMumps < Formula
       f90 = "mpif90"
       cc = "mpicc"
       mpirun = "mpirun -np 1 #{mpiopts}"
-      includes = "-I#{opt_include}"
+      includes = ["-I#{opt_include}", "-I#{Formula["mpich"].opt_include}"]
       opts << "-L#{Formula["mpich-scalapack"].opt_lib}" << "-lscalapack" << "-L#{opt_lib}"
     else
       ENV.prepend_path "LD_LIBRARY_PATH", "#{opt_libexec}/lib" unless OS.mac?
       f90 = "gfortran"
       cc = ENV["CC"]
       mpirun = ""
-      includes = "-I#{opt_libexec}/include"
+      includes = ["-I#{opt_libexec}/include"]
       opts << "-L#{opt_libexec}/lib" << "-lmpiseq"
     end
     if Tab.for_name("mpich-mumps").with?("mpich-parmetis")
       ENV.prepend_path "LD_LIBRARY_PATH", Formula["mpich-parmetis"].opt_lib unless OS.mac?
       opts << "-L#{Formula["mpich-parmetis"].opt_lib}" << "-lparmetis"
     end
-    if Tab.for_name("mpich-mumps").with?("brewsci-metis")
-      ENV.prepend_path "LD_LIBRARY_PATH", Formula["brewsci-metis"].opt_lib unless OS.mac?
-      opts << "-L#{Formula["brewsci-metis"].opt_lib}" << "-lmetis"
+    if Tab.for_name("mpich-mumps").with?("metis")
+      ENV.prepend_path "LD_LIBRARY_PATH", Formula["metis"].opt_lib unless OS.mac?
+      opts << "-L#{Formula["metis"].opt_lib}" << "-lmetis"
     end
     opts << "-lmumps_common" << "-lpord"
     opts << "-L#{Formula["openblas"].opt_lib}" << "-lopenblas"
 
     cd testpath/"examples" do
-      system f90, "-o", "ssimpletest", "ssimpletest.F", "-lsmumps", includes, *opts
+      system f90, "-o", "ssimpletest", "ssimpletest.F", "-lsmumps", *includes, *opts
       system "#{mpirun} ./ssimpletest < input_simpletest_real"
-      system f90, "-o", "dsimpletest", "dsimpletest.F", "-ldmumps", includes, *opts
+      system f90, "-o", "dsimpletest", "dsimpletest.F", "-ldmumps", *includes, *opts
       system "#{mpirun} ./dsimpletest < input_simpletest_real"
-      system f90, "-o", "csimpletest", "csimpletest.F", "-lcmumps", includes, *opts
+      system f90, "-o", "csimpletest", "csimpletest.F", "-lcmumps", *includes, *opts
       system "#{mpirun} ./csimpletest < input_simpletest_cmplx"
-      system f90, "-o", "zsimpletest", "zsimpletest.F", "-lzmumps", includes, *opts
+      system f90, "-o", "zsimpletest", "zsimpletest.F", "-lzmumps", *includes, *opts
       system "#{mpirun} ./zsimpletest < input_simpletest_cmplx"
-      system cc, "-c", "c_example.c", includes
+      system cc, "-c", "c_example.c", *includes
       system f90, "-o", "c_example", "c_example.o", "-ldmumps", *opts
       system(*(mpirun.split + ["./c_example"] + opts))
     end
