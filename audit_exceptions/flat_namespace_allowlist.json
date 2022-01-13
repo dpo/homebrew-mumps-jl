@@ -1,3 +1,4 @@
 [
-  "mpich-parmetis"
+  "mpich-parmetis",
+  "mpich-scalapack"
 ]
