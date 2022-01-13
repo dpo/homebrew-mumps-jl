@@ -6,9 +6,10 @@ class MpichScotch < Formula
   revision 1
 
   bottle do
-    root_url "https://github.com/dpo/homebrew-mumps-jl/releases/download/mpich-scotch-6.1.0"
-    sha256 cellar: :any,                 big_sur:      "8c54000ff13626960305dfe8d0dbe03b3a7cc33c1e165518490be638878144e8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "f1ec3483c4a475bb3bd5cec5cac3b9267af4409dc8b3e91ddf6f2dfa8b10cb4c"
+    root_url "https://github.com/dpo/homebrew-mumps-jl/releases/download/mpich-scotch-6.1.0_1"
+    sha256 cellar: :any,                 big_sur:      "2a07ddac676e802d05b03535a75c81ca1b7123047d23433b854163a8436973ad"
+    sha256 cellar: :any,                 catalina:     "b8be8a6b7a94be8ccaab2e491002639b7e7d31516c618eabf02c851ae71f6fb6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "e20b88c43ac634a3be810b5eeac8f5efe51bba8c80230bd4b0d3b317a5328c75"
   end
 
   keg_only "formulae in dpo/mumps-jl are keg only"
