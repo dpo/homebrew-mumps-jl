@@ -3,7 +3,7 @@ class MpichParmetis < Formula
   homepage "http://glaros.dtc.umn.edu/gkhome/metis/parmetis/overview"
   url "http://glaros.dtc.umn.edu/gkhome/fetch/sw/parmetis/parmetis-4.0.3.tar.gz"
   sha256 "f2d9a231b7cf97f1fee6e8c9663113ebf6c240d407d3c118c55b3633d6be6e5f"
-  revision 1
+  revision 2
 
   keg_only "because why not"
 
@@ -11,7 +11,7 @@ class MpichParmetis < Formula
 
   # METIS 5.* is required. It comes bundled with ParMETIS.
   # We prefer to brew it ourselves.
-  depends_on "brewsci/num/brewsci-metis"
+  depends_on "metis"
 
   depends_on "mpich"
 
@@ -33,7 +33,7 @@ class MpichParmetis < Formula
   end
 
   def install
-    ENV["LDFLAGS"] = "-L#{Formula["brewsci-metis"].lib} -lmetis -lm"
+    ENV["LDFLAGS"] = "-L#{Formula["metis"].lib} -lmetis -lm"
 
     system "make", "config", "prefix=#{prefix}", "shared=1"
     system "make", "install"
@@ -41,7 +41,7 @@ class MpichParmetis < Formula
   end
 
   test do
-    system "mpirun", "#{bin}/ptest", "#{pkgshare}/Graphs/rotor.graph"
+    system "mpirun", "-np", "2", "#{bin}/ptest", "#{pkgshare}/Graphs/rotor.graph"
   end
 end
 
