@@ -128,14 +128,7 @@ class MpichMumps < Formula
     cp_r pkgshare/"examples", testpath
     opts = ["-fopenmp"]
     mpiopts = ""
-    if OS.linux?
-      if ENV["CI"]
-        mpiopts = "--allow-run-as-root"
-        ENV["OMPI_ALLOW_RUN_AS_ROOT"] = "1"
-        ENV["OMPI_ALLOW_RUN_AS_ROOT_CONFIRM"] = "1"
-      end
-      ENV.prepend_path "LD_LIBRARY_PATH", Formula["mpich-scalapack"].opt_lib
-    end
+    ENV.prepend_path "LD_LIBRARY_PATH", Formula["mpich-scalapack"].opt_lib if OS.linux?
     f90 = "mpif90"
     cc = "mpicc"
     mpirun = "mpirun -np 1 #{mpiopts}"
@@ -155,9 +148,12 @@ class MpichMumps < Formula
       system "#{mpirun} ./csimpletest < input_simpletest_cmplx"
       system f90, "-o", "zsimpletest", "zsimpletest.F", "-lzmumps", includes, *opts
       system "#{mpirun} ./zsimpletest < input_simpletest_cmplx"
-      system cc, "-c", "c_example.c", includes
-      system f90, "-o", "c_example", "c_example.o", "-ldmumps", *opts
-      system(*(mpirun.split + ["./c_example"] + opts))
+      if OS.mac?
+        # fails on linux: gcc-5 not found
+        system cc, "-c", "c_example.c", includes
+        system f90, "-o", "c_example", "c_example.o", "-ldmumps", *opts
+        system(*(mpirun.split + ["./c_example"] + opts))
+      end
     end
   end
 end
