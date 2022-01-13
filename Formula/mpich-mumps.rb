@@ -5,6 +5,11 @@ class MpichMumps < Formula
   sha256 "93034a1a9fe0876307136dcde7e98e9086e199de76f1c47da822e7d4de987fa8"
   revision 1
 
+  bottle do
+    root_url "https://github.com/dpo/homebrew-mumps-jl/releases/download/mpich-mumps-5.4.1_1"
+    sha256 cellar: :any, big_sur: "ed3d499185ea1549c15338e0fb4b3fb3930af4c038ba85f2e9ae707a47d12269"
+  end
+
   keg_only "because why not"
 
   depends_on "dpo/mumps-jl/mpich-parmetis"
