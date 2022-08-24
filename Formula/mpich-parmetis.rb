@@ -7,10 +7,11 @@ class MpichParmetis < Formula
   revision 4
 
   bottle do
-    root_url "https://github.com/dpo/homebrew-mumps-jl/releases/download/mpich-parmetis-4.0.3_3"
-    sha256 cellar: :any,                 big_sur:      "2689a2e19c212212a12c6be8bf9397c9f5db681cc5e8ab1a5ac56e3f1653f1e5"
-    sha256 cellar: :any,                 catalina:     "a6969e70c33134de572cbe8f88536692348d8f5aa3f4b8ce0cebbf19d235e08e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "1514307c26b5dd11af3f603621d5cf5067bba71461b6d9c01c788d6e863ce195"
+    root_url "https://github.com/dpo/homebrew-mumps-jl/releases/download/mpich-parmetis-4.0.3_4"
+    sha256 cellar: :any,                 monterey:     "1cb728d39468d45b4737cc6280630880737de302e003ffc8ef83f385d07ae1fd"
+    sha256 cellar: :any,                 big_sur:      "f6f49ccfb5ceb33f56cb7ac36e1557e72c1d60940fd53be10804c5fb55b2ea7e"
+    sha256 cellar: :any,                 catalina:     "d425fd9ea1e4380c633634b28e56d643b666555cfdfa91f1e04aab32107bacc2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "a69aeced3cf1ba1c2ac44641c970480a41555cef30846e3b0adadc0c698bb807"
   end
 
   keg_only "because why not"
