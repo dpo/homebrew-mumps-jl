@@ -1,8 +1,10 @@
 class MpichMumps < Formula
   desc "Parallel Sparse Direct Solver"
   homepage "http://mumps-solver.org"
-  url "https://graal.ens-lyon.fr/MUMPS/MUMPS_5.5.1.tar.gz"
+  url "http://mumps.enseeiht.fr/MUMPS_5.5.1.tar.gz"
+  mirror "https://graal.ens-lyon.fr/MUMPS/MUMPS_5.5.1.tar.gz"
   sha256 "1abff294fa47ee4cfd50dfd5c595942b72ebfcedce08142a75a99ab35014fa15"
+  revision 1
 
   bottle do
     root_url "https://github.com/dpo/homebrew-mumps-jl/releases/download/mpich-mumps-5.5.1"
