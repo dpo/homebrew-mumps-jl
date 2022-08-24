@@ -12,10 +12,11 @@ class MpichScalapack < Formula
   end
 
   bottle do
-    root_url "https://github.com/dpo/homebrew-mumps-jl/releases/download/mpich-scalapack-2.2.0"
-    sha256 cellar: :any,                 big_sur:      "72d58a588f24eaefa9d4257043c6ce5fa564b40278e0bf6b1a3b9928e2ee24f6"
-    sha256 cellar: :any,                 catalina:     "9c79cc265f076ddb3e30b70d1b42698c50552d1d7a20c4eb738749f11be09269"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "aec54bdf7de300122acdc3bc4fb82d49737d49ac8c3aa8fc4b190575f803a2cb"
+    root_url "https://github.com/dpo/homebrew-mumps-jl/releases/download/mpich-scalapack-2.2.0_1"
+    sha256 cellar: :any,                 monterey:     "11c0ac34d4c290e5a19fd187b17c237417eaf385e654ac68d6dc13d8543ef004"
+    sha256 cellar: :any,                 big_sur:      "dc934736ea4c333cfd8bf231c9452d1c6bd8a5d96c02e3ee243b44e72b57249a"
+    sha256 cellar: :any,                 catalina:     "1955b6a68fc53aeb4588ccdbdef533b303444a1ab80ae424ba22dc96774e2c86"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "5a28f4593e220874af5cf005fceb6f8241ffd8082d95816b01ce632b3645e668"
   end
 
   keg_only "conflicts with a core formula"
