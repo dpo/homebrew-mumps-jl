@@ -4,6 +4,14 @@ class QrMumps < Formula
   url "http://buttari.perso.enseeiht.fr/qr_mumps/releases/qr_mumps-3.0.3.tgz"
   sha256 "bd83f3e6125bb08c04e9ec78dff7c4d375720c7ed064bbfb4fa27f710741ec9a"
 
+  bottle do
+    root_url "https://github.com/dpo/homebrew-mumps-jl/releases/download/qr_mumps-3.0.3"
+    sha256 cellar: :any,                 monterey:     "850d0d9ad58012f4060e8fc133c80bb73e13694f08e388af9300eae87ae1274c"
+    sha256 cellar: :any,                 big_sur:      "9c53ab12c5ec43474926d0ec454f1bee7fb85a7abe1aa30c994c61b60359dc3f"
+    sha256 cellar: :any,                 catalina:     "d741381db3583d679816ff95e2d6973ff7537294f1557f911e9e1259defe7819"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "50f8a21bdaf626715bab9f820abac446d97181de01de1ec98e7e98d583057676"
+  end
+
   depends_on "cmake" => :build
   depends_on "gcc"
   depends_on "metis"
