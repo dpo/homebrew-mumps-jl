@@ -1,9 +1,8 @@
 class QrMumps < Formula
   desc "Parallel sparse QR factorization"
   homepage "https://qr_mumps.gitlab.io"
-  url "https://gitlab.com/qr_mumps/qr_mumps/-/archive/3.0.3/qr_mumps-3.0.3.tar.gz"
-  sha256 "d5438362cfb4b888f31826c3cf009555a8dbb5eb7a64d0b516c02b54fd60bdac"
-  revision 1
+  url "https://gitlab.com/qr_mumps/qr_mumps/-/archive/3.1/qr_mumps-3.1.tar.gz"
+  sha256 "6e39dbfa1e6ad3730b006c8953a43cc6da3dfc91f00edeb68a641d364703b773"
 
   bottle do
     root_url "https://github.com/dpo/homebrew-mumps-jl/releases/download/qr_mumps-3.0.3_1"
@@ -23,6 +22,8 @@ class QrMumps < Formula
   def install
     cmake_args = %w[-DARITH=d;s;c;z
                     -DBUILD_SHARED_LIBS=ON
+                    -DQRM_WITH_TESTS=OFF
+                    -DQRM_WITH_EXAMPLES=OFF
                     -DQRM_ORDERING_AMD=ON
                     -DQRM_ORDERING_METIS=ON
                     -DQRM_ORDERING_SCOTCH=OFF
@@ -76,8 +77,8 @@ class QrMumps < Formula
         call qrm_vecnrm(x, qrm_spmat%n, "2", xnrm)
         call qrm_spmat_nrm(qrm_spmat, "f", anrm)
 
-        write(*,'("Expected result is x= 1.00000 2.00000 3.00000 4.00000 5.00000 6.00000 7.00000")')
-        write(*,'("Computed result is x=",7(1x,f7.5))')x
+        call qrm_prnt_array(xe,"Expected result is x")
+        call qrm_prnt_array(x,"Computed result is x")
 
         xe = xe-x;
         call qrm_vecnrm(xe, qrm_spmat%n, "2", fnrm)
@@ -85,7 +86,7 @@ class QrMumps < Formula
         write(*,'("Forward error norm       ||xe-x||  = ",e7.2)')fnrm
         write(*,'("Residual norm            ||A*x-b|| = ",e7.2)')rnrm
 
-        call qrm_spmat_destroy(qrm_spmat)
+        stop
       end program zqrm_example
     EOS
 
