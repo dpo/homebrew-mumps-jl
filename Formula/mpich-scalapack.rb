@@ -4,7 +4,7 @@ class MpichScalapack < Formula
   url "https://www.netlib.org/scalapack/scalapack-2.2.0.tgz"
   sha256 "40b9406c20735a9a3009d863318cb8d3e496fb073d201c5463df810e01ab2a57"
   license "BSD-3-Clause"
-  revision 1
+  revision 2
 
   livecheck do
     url :homepage
@@ -35,6 +35,9 @@ class MpichScalapack < Formula
   patch :DATA
 
   def install
+    # Fix compile with newer Clang
+    ENV.append_to_cflags "-Wno-implicit-function-declaration"
+
     mkdir "build" do
       blas = "-L#{Formula["openblas"].opt_lib} -lopenblas"
       system "cmake", "..", *std_cmake_args, "-DBUILD_SHARED_LIBS=ON",

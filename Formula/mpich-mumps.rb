@@ -1,10 +1,9 @@
 class MpichMumps < Formula
   desc "Parallel Sparse Direct Solver"
   homepage "http://mumps-solver.org"
-  url "http://mumps.enseeiht.fr/MUMPS_5.5.1.tar.gz"
-  mirror "https://graal.ens-lyon.fr/MUMPS/MUMPS_5.5.1.tar.gz"
+  url "https://mumps-solver.org/MUMPS_5.5.1.tar.gz"
   sha256 "1abff294fa47ee4cfd50dfd5c595942b72ebfcedce08142a75a99ab35014fa15"
-  revision 1
+  revision 2
 
   bottle do
     root_url "https://github.com/dpo/homebrew-mumps-jl/releases/download/mpich-mumps-5.5.1_1"
@@ -26,7 +25,7 @@ class MpichMumps < Formula
   fails_with :clang # because we use OpenMP
 
   resource "mumps_simple" do
-    url "https://github.com/dpo/mumps_simple/archive/v0.4.tar.gz"
+    url "https://github.com/dpo/mumps_simple/archive/refs/tags/v0.4.tar.gz"
     sha256 "87d1fc87eb04cfa1cba0ca0a18f051b348a93b0b2c2e97279b23994664ee437e"
   end
 
@@ -77,24 +76,24 @@ class MpichMumps < Formula
     # make shared lib
     so = OS.mac? ? "dylib" : "so"
     all_load = OS.mac? ? "-all_load" : "--whole-archive"
-    noall_load = OS.mac? ? "-noall_load" : "--no-whole-archive"
+    noall_load = OS.mac? ? "" : "-Wl,--no-whole-archive"
     compiler = OS.mac? ? "gfortran" : "mpif90" # mpif90 causes segfaults on macOS
     shopts = OS.mac? ? ["-undefined", "dynamic_lookup"] : []
     install_name = ->(libname) { OS.mac? ? ["-Wl,-install_name", "-Wl,#{lib}/#{libname}.#{so}"] : [] }
     cd "lib" do
       libpord_install_name = install_name.call("libpord")
       system compiler, "-fPIC", "-shared", "-Wl,#{all_load}", "libpord.a", *lib_args, \
-             "-Wl,#{noall_load}", *libpord_install_name, *shopts, "-o", "libpord.#{so}"
+             noall_load.to_s, *libpord_install_name, *shopts, "-o", "libpord.#{so}"
       lib.install "libpord.#{so}"
       libmumps_common_install_name = install_name.call("libmumps_common")
       system compiler, "-fPIC", "-shared", "-Wl,#{all_load}", "libmumps_common.a", *lib_args, \
-             "-L#{lib}", "-lpord", "-Wl,#{noall_load}", *libmumps_common_install_name, \
+             "-L#{lib}", "-lpord", noall_load.to_s, *libmumps_common_install_name, \
              *shopts, "-o", "libmumps_common.#{so}"
       lib.install "libmumps_common.#{so}"
       %w[libsmumps libdmumps libcmumps libzmumps].each do |l|
         libinstall_name = install_name.call(l)
         system compiler, "-fPIC", "-shared", "-Wl,#{all_load}", "#{l}.a", *lib_args, \
-               "-L#{lib}", "-lpord", "-lmumps_common", "-Wl,#{noall_load}", *libinstall_name, \
+               "-L#{lib}", "-lpord", "-lmumps_common", noall_load.to_s, *libinstall_name, \
                *shopts, "-o", "#{l}.#{so}"
       end
     end
