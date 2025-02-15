@@ -3,7 +3,7 @@ class MpichScotch < Formula
   homepage "https://gitlab.inria.fr/scotch"
   url "https://gitlab.inria.fr/scotch/scotch/-/archive/v6.1.0/scotch-v6.1.0.tar.gz"
   sha256 "4fe537f608f0fe39ec78807f90203f9cca1181deb16bfa93b7d4cd440e01bbd1"
-  revision 4
+  revision 5
 
   bottle do
     root_url "https://github.com/dpo/homebrew-mumps-jl/releases/download/mpich-scotch-6.1.0_4"
