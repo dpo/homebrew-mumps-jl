@@ -5,10 +5,10 @@ class QrMumps < Formula
   sha256 "6e39dbfa1e6ad3730b006c8953a43cc6da3dfc91f00edeb68a641d364703b773"
 
   bottle do
-    root_url "https://github.com/dpo/homebrew-mumps-jl/releases/download/qr_mumps-3.0.3_1"
-    sha256 cellar: :any,                 arm64_sequoia: "b43d5f7413b313b0e70a3a86734fa159bcdc644b536fe3c95390cd48b87e58b7"
-    sha256 cellar: :any,                 ventura:       "3fb69f900c46d8f711b2f754ea5423061e027eef87a2c5ab7bc1a5d2dbea3684"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f1e343026d23d2ab8c9226ae56bc1b1cf1276e9991a3ca45bc0abdf13f6b6c83"
+    root_url "https://github.com/dpo/homebrew-mumps-jl/releases/download/qr_mumps-3.1"
+    sha256 cellar: :any,                 arm64_sequoia: "b091b0aaf3414b00974c934422fbf42c91b60cc2cdd20ea997366002d807001d"
+    sha256 cellar: :any,                 ventura:       "714e4c25edacad4c71b0d482b98ffe52b48fc5a72e25094542d840270884a0aa"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b501a3c7a6ce32872d942c59403ecee149135e8b9c58bc85ae212a6f3d853eb9"
   end
 
   depends_on "cmake" => :build
