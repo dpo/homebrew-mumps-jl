@@ -4,7 +4,7 @@ class MpichParmetis < Formula
   url "https://mirror.math.princeton.edu/pub/ubuntu/pool/multiverse/p/parmetis/parmetis_4.0.3.orig.tar.gz"
   mirror "http://glaros.dtc.umn.edu/gkhome/fetch/sw/parmetis/parmetis-4.0.3.tar.gz"
   sha256 "f2d9a231b7cf97f1fee6e8c9663113ebf6c240d407d3c118c55b3633d6be6e5f"
-  revision 4
+  revision 5
 
   bottle do
     root_url "https://github.com/dpo/homebrew-mumps-jl/releases/download/mpich-parmetis-4.0.3_4"

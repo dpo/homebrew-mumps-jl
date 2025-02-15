@@ -1,8 +1,9 @@
 class QrMumps < Formula
   desc "Parallel sparse QR factorization"
-  homepage "http://buttari.perso.enseeiht.fr/qr_mumps"
-  url "http://buttari.perso.enseeiht.fr/qr_mumps/releases/qr_mumps-3.0.3.tgz"
-  sha256 "bd83f3e6125bb08c04e9ec78dff7c4d375720c7ed064bbfb4fa27f710741ec9a"
+  homepage "https://qr_mumps.gitlab.io"
+  url "https://gitlab.com/qr_mumps/qr_mumps/-/archive/3.0.3/qr_mumps-3.0.3.tar.gz"
+  sha256 "d5438362cfb4b888f31826c3cf009555a8dbb5eb7a64d0b516c02b54fd60bdac"
+  revision 1
 
   bottle do
     root_url "https://github.com/dpo/homebrew-mumps-jl/releases/download/qr_mumps-3.0.3"
