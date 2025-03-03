@@ -3,6 +3,7 @@ class QrMumps < Formula
   homepage "https://qr_mumps.gitlab.io"
   url "https://gitlab.com/qr_mumps/qr_mumps/-/archive/3.1/qr_mumps-3.1.tar.gz"
   sha256 "6e39dbfa1e6ad3730b006c8953a43cc6da3dfc91f00edeb68a641d364703b773"
+  revision 1
 
   bottle do
     root_url "https://github.com/dpo/homebrew-mumps-jl/releases/download/qr_mumps-3.1"
