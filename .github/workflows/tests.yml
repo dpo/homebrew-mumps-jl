@@ -10,7 +10,7 @@ jobs:
   test-bot:
     strategy:
       matrix:
-        os: [ubuntu-22.04, macos-13, macos-13-arm64, macos-14, macos-14-arm64, macos-15, macos-15-arm64]
+        os: [ubuntu-22.04, macos-13, macos-14, macos-15]  # 13 = x86_64, 14 and 15: arm64
     runs-on: ${{ matrix.os }}
     steps:
       - name: Set up Homebrew
