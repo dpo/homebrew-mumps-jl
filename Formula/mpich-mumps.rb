@@ -6,10 +6,11 @@ class MpichMumps < Formula
   revision 4
 
   bottle do
-    root_url "https://github.com/dpo/homebrew-mumps-jl/releases/download/mpich-mumps-5.5.1_3"
-    sha256 cellar: :any,                 arm64_sequoia: "ff288cae0b699fc3bc5a8219732a47f5b6d4476f7c8fc537d9a8b7ad58687b1e"
-    sha256 cellar: :any,                 ventura:       "114f331cbfc7797e096cd27c7016c43b16c936b749a7b3b431f40e02fd7c8e7a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0f5b3f533a44996a13e7fcba9b41609b212fec942005c149f27885135724e6b0"
+    root_url "https://github.com/dpo/homebrew-mumps-jl/releases/download/mpich-mumps-5.5.1_4"
+    sha256 cellar: :any,                 arm64_sequoia: "ab904c365100dc7f1757f3bd2c029bf0a95061743b3a90e65ae7f1cc00c23dbb"
+    sha256 cellar: :any,                 arm64_sonoma:  "b0908c40a88e4e4771694730ddd3bf98ff82a4f7219fe8f42115e2bb38691dcc"
+    sha256 cellar: :any,                 ventura:       "4a4d02ae75bdefe44c47190da67b9d7b84d0872cbb14d57da7af53191c925b1a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "150c884dc5afe735dabd18e3e07401f71d9f84236c83b566c7705506ff96991e"
   end
 
   keg_only "because why not"
